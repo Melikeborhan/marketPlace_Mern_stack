@@ -41,10 +41,12 @@ export const signin = async (req, res, next) => {
 
 export const google = async ( req,res,next) =>{
   try{
-    const user = User.findOne({email: req.body.email})
+    const user = await User.findOne({email: req.body.email}).exec()//
     if(user){
-      const token = JWT.sign({id:user._id},process.env.JWT_SECRET)
+      console.log(user);
+      const token = jwt.sign({id:user._id},process.env.JWT_SECRET)
       const{passworod:pass,...rest} = user._doc
+      
     res
     .cookie('access token',token,{httpOnly:true})
     .status(200)
